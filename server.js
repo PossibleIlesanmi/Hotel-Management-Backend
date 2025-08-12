@@ -8,8 +8,18 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
-app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:5173' }));
+// Validate and set CORS origin
+const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+console.log('Configured FRONTEND_URL:', frontendUrl); // Debug log
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || origin === frontendUrl) {
+      callback(null, frontendUrl);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+}));
 app.use(express.json());
 
 // Connect to MongoDB
