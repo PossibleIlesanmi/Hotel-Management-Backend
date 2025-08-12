@@ -1,4 +1,3 @@
-// server/routes/access.js
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
@@ -11,7 +10,7 @@ router.post('/validate', (req, res) => {
     return res.status(401).json({ message: 'Invalid code' });
   }
 
-  const token = jwt.sign({ access: 'admin' }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign({ access: 'admin' }, process.env.JWT_SECRET); // No expiresIn
   res.json({ token });
 });
 
